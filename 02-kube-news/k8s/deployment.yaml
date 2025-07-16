@@ -36,5 +36,52 @@ spec:
     targetPort: 5432
   selector:
     app: postgres
-
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kube-news-app
+spec:
+  replicas: 1
+  selector: 
+    matchLabels:
+      app: kube-news-app
+  template:
+    metadata:
+      labels:
+        app: kube-news-app
+    spec:
+      containers:
+      - name: kube-news-app
+        image: fabricioveronez/kube-news:v1
+        ports:
+        - containerPort: 8080
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: DB_HOST
+          value: "postgres-service"
+        - name: DB_PORT
+          value: "5432"
+        - name: DB_DATABASE
+          value: "kubedevnews"
+        - name: DB_USERNAME
+          value: "kubedevnews"
+        - name: DB_PASSWORD
+          value: "Pg#123"
+        - name: DB_SSL_REQUIRE
+          value: "false"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kube-news-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8080
+    targetPort: 8080
+  selector:
+    app: kube-news-app
+---
         
