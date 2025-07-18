@@ -21,7 +21,6 @@ jobs:
             - name: Build and push Docker Image
               uses: docker/build-push-action@v6
               with:
-                # docker build -t .
                 context: 02-kube-news/src
                 file: 02-kube-news/src/Dockerfile
                 push: true
