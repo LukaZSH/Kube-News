@@ -1,0 +1,20 @@
+name: Test
+on:
+  push:
+    branches-ignore:
+      - main
+jobs:
+  test-application:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run services
+        run: docker-compose -f 02-kube-news/compose.yaml up -d app db
+
+      - name: Wait for database
+        run: sleep 15
+
+      - name: Test application
+        run: curl -f http://localhost:8080
