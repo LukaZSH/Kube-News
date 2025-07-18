@@ -13,8 +13,17 @@ jobs:
       - name: Run services
         run: docker-compose -f 02-kube-news/compose.yaml up -d app db
 
-      - name: Wait for database
-        run: sleep 15
-
-      - name: Test application
-        run: curl -f http://localhost:8080
+      - name: Wait for application and run test
+        run: |
+          echo "Aguardando a aplicação ficar pronta... (tentativas por 60 segundos)"
+          for i in {1..12}; do
+            # O -s -f faz o curl falhar silenciosamente se o status não for 2xx
+            if curl -s -f http://localhost:8080; then
+              echo "Aplicação pronta e respondendo com sucesso!"
+              exit 0 # Sucesso, encerra o script com sucesso.
+            fi
+            echo "Tentativa $i/12 falhou. Tentando de novo em 5 segundos..."
+            sleep 5
+          done
+          echo "Erro: A aplicação não respondeu após 60 segundos."
+          exit 1 # Erro, o script falha e o workflow para.
