@@ -31,8 +31,19 @@ jobs:
     CD:
         needs: [CI]
         runs-on: ubuntu-latest
-        
         steps:
-            - run: echo "Obter o código"
-            - run: echo "Configurar o Kubeconfig"
-            - run: echo "Executar o apply"
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Set up Kubeconfig
+              uses: azure/k8s-set-context@v4
+              with:
+                kubeconfig: ${{ secrets.KUBE_CONFIG }}
+            
+            - name: Deploy to Kubernetes
+              uses: azure/k8s-deploy@v5
+              with:
+                manifests: |
+                  02-kube-news/k8s/deployment.yaml
+                images: |
+                  lukazsh/kube-news:v${{ github.run_number }}
