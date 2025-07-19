@@ -36,6 +36,10 @@ jobs:
           echo "Erro: A aplicação não respondeu após 60 segundos."
           exit 1 # Erro, o job falha.
 
+      - name: Show Docker container logs on failure
+        if: failure()
+        run: docker compose -f app/compose.yaml logs
+
   # ===================================================================
   # JOB 2: CONSTRÓI E FAZ O DEPLOY DA APLICAÇÃO
   # ===================================================================
