@@ -1,4 +1,4 @@
-name: CI/CD Pipeline for Kube-News
+name: Pipeline de CI/CD para Kube-News
 
 on:
   push:
