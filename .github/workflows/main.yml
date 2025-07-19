@@ -77,7 +77,7 @@ jobs:
         run: doctl kubernetes cluster kubeconfig save k8s-aula
 
       - name: Deploy to Kubernetes by applying manifests
-        run: kubectl apply -f infra/
+        run: kubectl apply -f infra/ -R
 
       - name: Update deployment image to new version
         run: kubectl set image deployment/kube-news-app kube-news-app=lukazsh/kube-news:v${{ github.run_number }}
