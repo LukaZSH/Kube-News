@@ -68,7 +68,7 @@ jobs:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
       - name: Save Kubernetes cluster config
-        run: doctl kubernetes cluster kubeconfig save SEU_NOME_DE_CLUSTER_AQUI
+        run: doctl kubernetes cluster kubeconfig save k8s-aula
 
       - name: Deploy to Kubernetes by applying manifests
         # Este apply garante que todos os recursos (Service, etc) estão criados.
