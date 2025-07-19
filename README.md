@@ -27,14 +27,17 @@ O objetivo é aplicar os pilares fundamentais de DevOps e explorar o uso de IA G
 ### 🚀 Aplicação em Produção
 *A aplicação Kube-News, após o deploy bem-sucedido via pipeline de CI/CD, acessível publicamente através de um Load Balancer.*
 
-`[INSERIR PRINT DA APLICAÇÃO ONLINE AQUI]`
+<img width="2537" height="1513" alt="Deploy no K8s" src="https://github.com/user-attachments/assets/349be588-2e33-4f9b-bfaf-364c51319287" />
+
+---
 
 <br>
 
 ### 🔄 Pipeline de CI/CD em Ação
 *O workflow do GitHub Actions mostrando a execução dos jobs de CI e CD sendo concluídos com sucesso após um `git push`.*
 
-`[INSERIR PRINT DO GITHUB ACTIONS COM OS JOBS VERDES AQUI]`
+<img width="2517" height="934" alt="Pipeline de CD" src="https://github.com/user-attachments/assets/e3a00629-2ea1-4352-b99a-5188ee6c506f" />
+
 
 <br>
 
@@ -48,7 +51,8 @@ O objetivo é aplicar os pilares fundamentais de DevOps e explorar o uso de IA G
 ### 🤖 Assistente de IA em Ação (Gemini CLI)
 *Uso do Gemini CLI no terminal WSL para gerar manifestos do Kubernetes e workflows do GitHub Actions, demonstrando a capacidade de acelerar o desenvolvimento e a análise de configurações.*
 
-`[INSERIR PRINT DO TERMINAL USANDO O GEMINI CLI AQUI]`
+<img width="1980" height="1078" alt="gemini-cli" src="https://github.com/user-attachments/assets/4b0870cf-a56b-4b5f-8353-52ffdda50ecb" />
+
 
 ---
 
@@ -56,7 +60,7 @@ O objetivo é aplicar os pilares fundamentais de DevOps e explorar o uso de IA G
 
 O fluxo de trabalho implementado segue as melhores práticas de DevOps:
 
-1.  **Desenvolvimento & IA:** O código da aplicação é alterado e testado localmente com Docker Compose. O **Gemini CLI** é utilizado para gerar e otimizar scripts e manifestos.
+1.  **Desenvolvimento & IA:** O código da aplicação é alterado e testado localmente com Docker Compose. O **Gemini CLI** é utilizado principalmente para otimizar scripts e manifestos.
 2.  **Versionamento:** As alterações são enviadas para o GitHub (`git push`).
 3.  **CI (Integração Contínua):** O push dispara um workflow no **GitHub Actions** que:
     * Executa testes automatizados.
