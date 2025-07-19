@@ -41,10 +41,17 @@ O objetivo é aplicar os pilares fundamentais de DevOps e explorar o uso de IA G
 
 <br>
 
+### 📈 Coleta de Métricas (Prometheus)
+*Interface do Prometheus exibindo a coleta da métrica `http_request_duration_seconds_count`, demonstrando que a descoberta de serviços está funcionando e os dados da aplicação estão sendo coletados com sucesso.*
+
+<img width="2549" height="1443" alt="Métricas do Prometheus" src="https://github.com/user-attachments/assets/d6c90930-e1a8-457a-b343-7b051ae84660" />
+
+
 ### 📊 Dashboard de Monitoramento (Grafana)
 *Dashboard no Grafana exibindo as métricas da aplicação (uso de CPU, memória, latência) coletadas pelo Prometheus em tempo real.*
 
-`[INSERIR PRINT DO DASHBOARD DO GRAFANA AQUI]`
+<img width="2017" height="1429" alt="Dashboard do cluster K8s no Grafana" src="https://github.com/user-attachments/assets/8c2d9f2d-1547-4329-848a-2d27542158ef" />
+
 
 <br>
 
