@@ -1,4 +1,4 @@
-name: CI-CD
+name: CI/CD Pipeline for Kube-News
 
 on:
   push:
@@ -6,44 +6,74 @@ on:
   workflow_dispatch:
 
 jobs:
-    CI:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout repository
-              uses: actions/checkout@v4
-            
-            - name: Login to Docker Hub
-              uses: docker/login-action@v3
-              with:
-                username: ${{ vars.DOCKERHUB_USERNAME }}
-                password: ${{ secrets.DOCKERHUB_TOKEN }}
+  # ===================================================================
+  # JOB 1: TESTA A APLICAÇÃO EM UM AMBIENTE SIMULADO
+  # ===================================================================
+  test-application:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-            - name: Build and push Docker Image
-              uses: docker/build-push-action@v6
-              with:
-                context: 02-kube-news/src
-                file: 02-kube-news/src/Dockerfile
-                push: true
-                tags: | 
-                  lukazsh/kube-news:v${{ github.run_number }}
-                  lukazsh/kube-news:latest
+      - name: Run services with Docker Compose
+        # Sobe os serviços 'app' e 'db' em background
+        run: docker-compose -f 02-kube-news/compose.yaml up -d
 
-    CD:
-        needs: [CI]
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout repository
-              uses: actions/checkout@v4
+      - name: Wait for application and run test
+        # Usa um loop de espera ativa para verificar se a aplicação está pronta
+        run: |
+          echo "Aguardando a aplicação ficar pronta... (tentativas por 60 segundos)"
+          for i in {1..12}; do
+            if curl -s -f http://localhost:8080; then
+              echo "Aplicação pronta e respondendo com sucesso!"
+              exit 0 # Sucesso, encerra o script.
+            fi
+            echo "Tentativa $i/12 falhou. Tentando de novo em 5 segundos..."
+            sleep 5
+          done
+          echo "Erro: A aplicação não respondeu após 60 segundos."
+          exit 1 # Erro, o job falha.
 
-            - name: Set up Kubeconfig
-              uses: azure/k8s-set-context@v4
-              with:
-                kubeconfig: ${{ secrets.KUBE_CONFIG }}
-            
-            - name: Deploy to Kubernetes
-              uses: azure/k8s-deploy@v5
-              with:
-                manifests: |
-                  02-kube-news/k8s/deployment.yaml
-                images: |
-                  lukazsh/kube-news:v${{ github.run_number }}
+  # ===================================================================
+  # JOB 2: CONSTRÓI E FAZ O DEPLOY DA APLICAÇÃO
+  # ===================================================================
+  deploy-to-production:
+    # Esta é a chave: este job só roda se o job 'test-application' for concluído com sucesso.
+    needs: [test-application]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push Docker Image
+        id: build-and-push # Damos um ID ao step para usar seu output depois
+        uses: docker/build-push-action@v6
+        with:
+          context: 02-kube-news/src
+          file: 02-kube-news/src/Dockerfile
+          push: true
+          tags: | 
+            lukazsh/kube-news:v${{ github.run_number }}
+            lukazsh/kube-news:latest
+
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Save Kubernetes cluster config
+        run: doctl kubernetes cluster kubeconfig save SEU_NOME_DE_CLUSTER_AQUI
+
+      - name: Deploy to Kubernetes by applying manifests
+        # Este apply garante que todos os recursos (Service, etc) estão criados.
+        run: kubectl apply -f 02-kube-news/k8s/
+
+      - name: Update deployment image to new version
+        # Este comando atualiza a imagem do deployment para a versão que acabamos de construir.
+        run: kubectl set image deployment/kube-news-app kube-news-app=lukazsh/kube-news:v${{ github.run_number }}
