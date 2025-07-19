@@ -15,12 +15,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+        # Esta action prepara o ambiente Docker, incluindo o plugin do Compose
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Run services with Docker Compose
-        # Caminho atualizado para a pasta 'app'
-        run: docker-compose -f app/compose.yaml up -d
+        run: docker compose -f app/compose.yaml up -d
 
       - name: Wait for application and run test
-        # Usa um loop de espera ativa para verificar se a aplicação está pronta
         run: |
           echo "Aguardando a aplicação ficar pronta... (tentativas por 60 segundos)"
           for i in {1..12}; do
