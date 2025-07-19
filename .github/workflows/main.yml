@@ -3,9 +3,29 @@ name: Pipeline de CI/CD para Kube-News
 on:
   push:
     branches: [ "main" ]
+    # Este workflow só será ignorado se as ÚNICAS alterações
+    # no push forem em arquivos .md ou no .gitignore.
+    paths-ignore:
+      - 'README.md'
+      - '**.md'
+      - '.gitignore'
+
   workflow_dispatch:
 
 jobs:
+  # ===================================================================
+  # JOB 0: LINT - VERIFICA A QUALIDADE E SINTAXE DO CÓDIGO
+  # ===================================================================
+  lint-code:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Hadolint to check Dockerfile
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: app/src/Dockerfile
   # ===================================================================
   # JOB 1: TESTA A APLICAÇÃO EM UM AMBIENTE SIMULADO
   # ===================================================================
@@ -44,8 +64,8 @@ jobs:
   # JOB 2: CONSTRÓI E FAZ O DEPLOY DA APLICAÇÃO
   # ===================================================================
   deploy-to-production:
-    # Este job só roda se o job 'test-application' for concluído com sucesso.
-    needs: [test-application]
+    # Este job só roda se o job de 'lint-code' e 'test-application' for concluído com sucesso.
+    needs: [lint-code, test-application]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
