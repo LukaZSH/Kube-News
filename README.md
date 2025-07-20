@@ -1,4 +1,4 @@
-# 🚀 Maratona DevOps & IA - Projeto de Implantação Completa
+# 🚀 Kube-News - Projeto de Implantação Completa
 
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white) ![Kubernetes](https://img.shields.io/badge/kubernetes-%23326ce5.svg?style=for-the-badge&logo=kubernetes&logoColor=white) ![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white) ![Gemini](https://img.shields.io/badge/Gemini-4285F4?style=for-the-badge&logo=google-gemini&logoColor=white) ![Prometheus](https://img.shields.io/badge/Prometheus-E6522C?style=for-the-badge&logo=Prometheus&logoColor=white) ![Grafana](https://img.shields.io/badge/grafana-%23F46800.svg?style=for-the-badge&logo=grafana&logoColor=white)
 
@@ -62,7 +62,9 @@ O objetivo é aplicar os pilares fundamentais de DevOps e explorar o uso de IA G
 ---
 
 ## ⚙️ Arquitetura da Solução
+O diagrama abaixo, gerado com a abordagem de "Diagrams as Code" (Python), ilustra o fluxo completo da arquitetura implementada neste projeto, desde o versionamento do código até o monitoramento em produção.
 
+![Arquitetura do Projeto Kube-News](architecture/Arquitetura_do_Projeto_Kube-News.png)
 O fluxo de trabalho implementado segue as melhores práticas de DevOps:
 
 1.  **Desenvolvimento & IA:** O código da aplicação é alterado e testado localmente com Docker Compose. O **Gemini CLI** é utilizado para otimizar scripts e manifestos.
