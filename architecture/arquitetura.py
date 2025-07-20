@@ -1,5 +1,3 @@
-# arquitetura.py (Versão Detalhada)
-
 from diagrams import Diagram, Cluster, Edge
 from diagrams.onprem.vcs import Github
 from diagrams.onprem.ci import GithubActions
@@ -15,7 +13,7 @@ from diagrams.onprem.client import User
 # Atributos para os clusters visuais no diagrama
 graph_attr = {
     "fontsize": "20",
-    "bgcolor": "transparent"
+    "bgcolor": "white"
 }
 
 with Diagram("Arquitetura Detalhada - Projeto Kube-News", show=False, graph_attr=graph_attr, direction="TB"):
@@ -53,7 +51,7 @@ with Diagram("Arquitetura Detalhada - Projeto Kube-News", show=False, graph_attr
 
     github_actions >> Edge(label="build & push da imagem") >> docker_registry
 
-    github_actions >> Edge(label="doctl & kubectl apply\n(deploy dos manifestos)") >> k8s_cluster
+    github_actions >> Edge(label="doctl & kubectl apply\n(deploy dos manifestos)", label_pos="left") >> k8s_cluster
     
     usuario_final >> Edge(label="Requisição HTTPS") >> do_lb >> Edge(label="Porta 8080") >> kube_news_service >> kube_news_pods
 
