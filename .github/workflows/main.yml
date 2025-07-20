@@ -9,6 +9,8 @@ on:
       - 'README.md'
       - '**.md'
       - '.gitignore'
+      - '**.py'
+      - '**.png'
 
   workflow_dispatch:
 
