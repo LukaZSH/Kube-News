@@ -64,7 +64,7 @@ O objetivo é aplicar os pilares fundamentais de DevOps e explorar o uso de IA G
 ## ⚙️ Arquitetura da Solução
 O diagrama abaixo, gerado com a abordagem de "Diagrams as Code" (Python), ilustra o fluxo completo da arquitetura implementada neste projeto, desde o versionamento do código até o monitoramento em produção.
 
-![Arquitetura do Projeto Kube-News](architecture/Arquitetura_do_Projeto_Kube-News.png)
+![Arquitetura do Projeto Kube-News](architecture/Arquitetura%20Detalhada%20-%20Projeto%20Kube-News.png)
 O fluxo de trabalho implementado segue as melhores práticas de DevOps:
 
 1.  **Desenvolvimento & IA:** O código da aplicação é alterado e testado localmente com Docker Compose. O **Gemini CLI** é utilizado para otimizar scripts e manifestos.
